@@ -43,6 +43,92 @@
       line-height: 1.7;
     }
 
+    /* --- INTRO SPLASH SCREEN --- */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      padding: 24px;
+      cursor: pointer;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      max-width: 420px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .splash-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--primary-dark);
+      font-size: 2rem;
+      font-weight: 900;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .splash-content h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .splash-content p {
+      opacity: 0.85;
+      font-size: 1.05rem;
+      margin-bottom: 30px;
+    }
+
+    .splash-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: var(--primary-dark);
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(216, 163, 61, 0.4); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(216, 163, 61, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(216, 163, 61, 0); }
+    }
+    /* --------------------------- */
+
     a {
       color: inherit;
       text-decoration: none;
@@ -362,6 +448,7 @@
       padding: 0;
       position: relative;
       overflow: hidden;
+      cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -369,7 +456,6 @@
       transform: translateY(-5px);
       box-shadow: var(--shadow);
     }
-
 
     .menu-image {
       position: relative;
@@ -416,17 +502,6 @@
       padding: 22px 24px 24px;
     }
 
-    .menu-icon {
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      border-radius: 17px;
-      background: rgba(216, 163, 61, 0.18);
-      font-size: 1.65rem;
-      margin-bottom: 18px;
-    }
-
     .menu-card h3 {
       color: var(--primary-dark);
       font-size: 1.17rem;
@@ -448,10 +523,133 @@
       font-size: 1.28rem;
     }
 
-    .price small {
-      font-size: 0.8rem;
-      color: var(--muted);
+    /* --- LARGE MODAL POPUP --- */
+    #menu-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
     }
+
+    #menu-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--paper);
+      border-radius: var(--radius-lg);
+      max-width: 720px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      animation: zoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      z-index: 10;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: scale(1.05);
+    }
+
+    .modal-image-container {
+      background: #ead9c2;
+      position: relative;
+      min-height: 320px;
+    }
+
+    .modal-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-body {
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .modal-body h3 {
+      color: var(--primary-dark);
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .modal-body p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 24px;
+    }
+
+    .modal-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .modal-footer .price {
+      font-size: 1.6rem;
+    }
+
+    /* Responsive สำหรับจอมือถือเล็ก */
+    @media (max-width: 680px) {
+      .modal-content {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-image-container {
+        height: 240px;
+        min-height: auto;
+      }
+      .modal-body {
+        padding: 24px;
+      }
+      .modal-body h3 {
+        font-size: 1.5rem;
+      }
+    }
+    /* ------------------- */
 
     .branch-section {
       background: rgba(255, 255, 255, 0.45);
@@ -734,6 +932,42 @@
 </head>
 
 <body>
+
+  <!-- หน้า Intro / Splash Screen -->
+  <div id="splash-screen" onclick="enterSite()">
+    <div class="splash-content">
+      <div class="splash-logo">LE</div>
+      <h2>Lanna Eats</h2>
+      <p>สัมผัสรสชาติอาหารเหนือแท้ๆ ส่งตรงความอร่อยจากเชียงใหม่ถึงคุณ</p>
+      <div class="splash-btn">
+        <span>แตะเพื่อเข้าสู่เว็บไซต์</span>
+        <span>→</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal สำหรับขยายดูรายละเอียดเมนู (ขนาดใหญ่) -->
+  <div id="menu-modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-image-container">
+        <img id="modal-img" src="" alt="ภาพเมนู" />
+      </div>
+      <div class="modal-body">
+        <div>
+          <h3 id="modal-title"></h3>
+          <p id="modal-desc"></p>
+        </div>
+        <div class="modal-footer">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="price" id="modal-price"></span>
+          </div>
+          <a class="btn btn-primary" href="#order" onclick="closeModal()" style="width: 100%;">สั่งอาหารเมนูนี้</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="topbar">อาหารเหนือรสชาติล้านนา พร้อมให้บริการ 3 สาขาในเชียงใหม่</div>
 
   <header>
@@ -791,17 +1025,13 @@
         <div class="section-heading">
           <span class="label">Our Menu</span>
           <h2>เมนูยอดนิยมของร้าน</h2>
-          <p>อาหารเหนือและเครื่องดื่มในราคาสบายกระเป๋า เหมาะสำหรับมื้อกลางวันและมื้อเย็น</p>
+          <p>คลิกที่การ์ดเมนูเพื่อเปิดหน้าต่างรายละเอียดขนาดใหญ่</p>
         </div>
 
         <div class="menu-grid">
-          <article class="menu-card">
+          <article class="menu-card" onclick="openModal('assets/images/img-001.jpg', 'ข้าวซอยไก่', 'ข้าวซอยน้ำแกงเข้มข้นสูตรต้นตำรับ เคี่ยวจนเครื่องแกงเข้าเนื้อ เสิร์ฟพร้อมเนื้อไก่นุ่มละมุน เส้นกรอบกรุบ และเครื่องเคียงครบสูตรแบบล้านนาแท้ๆ', '55 บาท')">
             <div class="menu-image">
-              <img
-                src="assets/images/img-001.jpg"
-                alt="ข้าวซอยไก่"
-                loading="lazy"
-              />
+              <img src="assets/images/img-001.jpg" alt="ข้าวซอยไก่" loading="lazy" />
               <span class="price-badge">55 <small>บาท</small></span>
             </div>
             <div class="menu-content">
@@ -810,13 +1040,9 @@
             </div>
           </article>
 
-          <article class="menu-card">
+          <article class="menu-card" onclick="openModal('assets/images/img-002.jpg', 'ข้าวซอยเนื้อ', 'เนื้อวัวคุณภาพคัดพิเศษตุ๋นจนเปื่อยนุ่มละมุนลิ้น เสิร์ฟคู่กับน้ำแกงข้าวซอยรสกลมกล่อมเข้มข้น จัดเต็มความอร่อยสไตล์ล้านนาแท้', '65 บาท')">
             <div class="menu-image">
-              <img
-                src="assets/images/img-002.jpg"
-                alt="เมนูข้าวซอยเนื้อ"
-                loading="lazy"
-              />
+              <img src="assets/images/img-002.jpg" alt="เมนูข้าวซอยเนื้อ" loading="lazy" />
               <span class="price-badge">65 <small>บาท</small></span>
             </div>
             <div class="menu-content">
@@ -825,13 +1051,9 @@
             </div>
           </article>
 
-          <article class="menu-card">
+          <article class="menu-card" onclick="openModal('assets/images/img-003.jpg', 'ขนมจีนน้ำเงี้ยว', 'เส้นขนมจีนเหนียวนุ่มราดด้วยน้ำซุปรสเข้มข้นจัดจ้าน หอมเครื่องเทศและดอกงิ้วแท้ กระดูกหมูเปื่อยกำลังดี พร้อมเครื่องเคียงผักสดพื้นบ้าน', '50 บาท')">
             <div class="menu-image">
-              <img
-                src="assets/images/img-003.jpg"
-                alt="ขนมจีนน้ำเงี้ยว"
-                loading="lazy"
-              />
+              <img src="assets/images/img-003.jpg" alt="ขนมจีนน้ำเงี้ยว" loading="lazy" />
               <span class="price-badge">50 <small>บาท</small></span>
             </div>
             <div class="menu-content">
@@ -840,13 +1062,9 @@
             </div>
           </article>
 
-          <article class="menu-card">
+          <article class="menu-card" onclick="openModal('assets/images/img-005.jpg', 'น้ำส้มคั้นสด', 'น้ำส้มคั้นสดแท้ 100% รสชาติหวานอมเปรี้ยวกำลังดี แช่เย็นจัดดื่มแล้วชื่นใจ ช่วยตัดเลี่ยนจากอาหารเหนือได้เป็นอย่างดี', '25 บาท')">
             <div class="menu-image">
-              <img
-                src="assets/images/img-005.jpg"
-                alt="น้ำส้ม"
-                loading="lazy"
-              />
+              <img src="assets/images/img-005.jpg" alt="น้ำส้ม" loading="lazy" />
               <span class="price-badge">25 <small>บาท</small></span>
             </div>
             <div class="menu-content">
@@ -855,14 +1073,9 @@
             </div>
           </article>
 
-
-          <article class="menu-card">
+          <article class="menu-card" onclick="openModal('assets/images/img-004.jpg', 'ชาไทยเย็น', 'ชาไทยสูตรพิเศษหอมเข้มข้น รสชาติหวานมันกำลังดี เสิร์ฟเย็นชื่นใจ ดื่มคู่กับมื้ออาหารเหนือได้อย่างลงตัว', '25 บาท')">
             <div class="menu-image">
-              <img
-                src="assets/images/img-004.jpg"
-                alt="ชาเย็น"
-                loading="lazy"
-              />
+              <img src="assets/images/img-004.jpg" alt="ชาเย็น" loading="lazy" />
               <span class="price-badge">25 <small>บาท</small></span>
             </div>
             <div class="menu-content">
@@ -871,21 +1084,15 @@
             </div>
           </article>
 
-          
-
-          <article class="menu-card">
+          <article class="menu-card" onclick="openModal('assets/images/img-001.jpg', 'บริการเดลิเวอรีและหน้าร้าน', 'สามารถเลือกรับประทานที่ร้านทั้ง 3 สาขาในบรรยากาศอบอุ่น หรือสั่งเดลิเวอรีส่งตรงถึงบ้านผ่านแอปพลิเคชันชั้นนำได้ทันที', 'ดูช่องทางสั่ง')">
             <div class="menu-image">
-              <img
-                src="assets/images/img-001.jpg"
-                alt="บริการอาหารหน้าร้านและเดลิเวอรี"
-                loading="lazy"
-              />
+              <img src="assets/images/img-001.jpg" alt="บริการอาหารหน้าร้านและเดลิเวอรี" loading="lazy" />
               <span class="price-badge">สั่งเลย</span>
             </div>
             <div class="menu-content">
               <h3>รับประทานที่ร้านและเดลิเวอรี</h3>
               <p>เลือกใช้บริการได้ทั้งหน้าร้าน LINE Official, Grab และ LINE MAN</p>
-              <a class="price" href="#order">ดูช่องทางสั่งอาหาร →</a>
+              <span class="price">ดูช่องทางสั่งอาหาร →</span>
             </div>
           </article>
         </div>
@@ -1004,6 +1211,28 @@
   </footer>
 
   <script>
+    // ฟังก์ชันสำหรับเปิดเข้าสู่เว็บไซต์เมื่อแตะหน้า Intro
+    function enterSite() {
+      const splashScreen = document.getElementById("splash-screen");
+      splashScreen.classList.add("hidden");
+    }
+
+    // ฟังก์ชันเปิด Modal รายละเอียดเมนู (ขนาดใหญ่)
+    function openModal(imgSrc, title, desc, price) {
+      const modal = document.getElementById("menu-modal");
+      document.getElementById("modal-img").src = imgSrc;
+      document.getElementById("modal-title").textContent = title;
+      document.getElementById("modal-desc").textContent = desc;
+      document.getElementById("modal-price").textContent = price;
+      modal.classList.add("active");
+    }
+
+    // ฟังก์ชันปิด Modal
+    function closeModal() {
+      const modal = document.getElementById("menu-modal");
+      modal.classList.remove("active");
+    }
+
     const menuButton = document.getElementById("menuButton");
     const navLinks = document.getElementById("navLinks");
 
